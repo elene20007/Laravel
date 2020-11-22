@@ -111,6 +111,6 @@ class ProductsController extends Controller
 
     public function get_usersProjects()
     {
-        return Projects::with('UsersProjects')->get();
+        return Projects::with('UsersProjects')->get()[0];
     }
 }
