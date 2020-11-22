@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//Task6
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/home/create', "ProductsController@create")->name("addproductpage");
@@ -25,3 +26,13 @@ Route::post('/home/store', "ProductsController@store")->name("userstore");
 Route::post('/home/destroy', "ProductsController@destroy")->name("userdestroy");
 Route::get('/home/edit{id}', "ProductsController@edit")->name("useredit");
 Route::post('/home/update', "ProductsController@update")->name("userupdate");
+
+
+//Task7
+Route::get('/get_numbs',"ProductsController@get_phone");
+Route::get('/Posts',"ProductsController@PostsWithComments");
+Route::get('/usersprojects',"ProductsController@get_usersProjects");
+
+/*//Task8
+Route::get("admin/create/product","PhotoController@create")->name("admincreateproduct");
+Route::post("admin/store/product","PhotoController@store")->name("admincreateproduct");*/

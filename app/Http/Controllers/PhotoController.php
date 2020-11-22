@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use App\Products;
-use App\User;
-use Auth;
-use App\Posts;
-use App\Comments;
-use App\Projects;
+use File;
 
-class ProductsController extends Controller
+class PhotoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +26,8 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view("products.create");
+        return view("admin.create");
+
     }
 
     /**
@@ -40,12 +38,16 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        products::create([
-            "user_id"=>Auth::user()->id,
+        if (Input::file("image")){
+            $dp=public_path("images");
+            $filename=uniqid().".jpg";
+            $img=Input::file("image")->move($dp,$filename);
+        }
+        return Products::create([
             "title"=>$request->input("title"),
-            "description"=>$request->input("description")
+            "description"=>$request->input("description"),
+            "image"=>$filename
         ]);
-        return redirect()->route('home');
     }
 
     /**
@@ -67,8 +69,7 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $Products=Products::where('id',$id)->firstOrFail();
-        return view("products.edit",["Products"=>$Products]);
+        //
     }
 
     /**
@@ -78,13 +79,9 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        Products::where("id",$request->input("id"))->update([
-            "title"=>$request->input("title"),
-            "description"=>$request->input("description")
-            ]);
-        return redirect()->route("home");
+        //
     }
 
     /**
@@ -93,24 +90,8 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        Products::where ("id",$request->input("id"))->delete();
-        return redirect()->back();
-    }
-
-    public function get_phone(){
-        return User::with(['phone'])->get()[0]['phone']; //[0]-მასივის ინდექსი
-    }
-
-    public function PostsWithComments(){
-        //return Comments::join('posts', 'post_id', 'posts.id')->get();
-        //return Comments::withCount(['Post'])->get();
-        return Posts::withCount(['comments'])->get();
-    }
-
-    public function get_usersProjects()
-    {
-        return Projects::with('UsersProjects')->get();
+        //
     }
 }
