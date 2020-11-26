@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Products;
+use App\Rules\CheckAboutSymbols;
 use File;
 
 class PhotoController extends Controller
@@ -38,16 +39,24 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            "title"=>["required","unique:Products",new CheckAboutSymbols], //|max:,min:,between:,numeric
+            "image"=>"required|image|mimes:png"
+            /*
+            for video memtype mimes:mp4,mov,ogg,qt,webm
+            */
+        ]);
         if (Input::file("image")){
             $dp=public_path("images");
             $filename=uniqid().".jpg";
             $img=Input::file("image")->move($dp,$filename);
         }
-        return Products::create([
+        Products::create([
             "title"=>$request->input("title"),
             "description"=>$request->input("description"),
             "image"=>$filename
         ]);
+        return view("guest.index");
     }
 
     /**
