@@ -1,0 +1,217 @@
+﻿var Globals = {
+    UrlBasketPage: null,
+    UrlBasketAddToCart: null,
+    UrlSignUp: null,
+    UrlLogin: null,
+    UrlForgotPassword: null,
+    UrlForgotPasswordResetPassword: null,
+    IsUserLoggedIn: null,
+    UrlProducts: null,
+    QueryParameter: null,
+
+    ShowSingInPopup: function () {
+        FancyBox.ClosePopup();        
+        FancyBox.Init({
+            src: Globals.UrlLogin,
+            baseClass: 'sm-popup'
+        }).ShowIframePopup();
+    },
+    ShowSingUpPopup: function () {
+        FancyBox.ClosePopup();        
+        FancyBox.Init({
+            src: Globals.UrlSignUp,
+        }).ShowIframePopup();        
+    },
+    ShowForgotPasswordPopup: function () {
+        FancyBox.ClosePopup();
+        FancyBox.Init({
+            src: Globals.UrlForgotPassword,
+            baseClass: 'sm-popup'
+        }).ShowIframePopup();
+    },
+    ShowForgotPasswordResetPasswordPopup: function () {
+        FancyBox.ClosePopup();
+        FancyBox.Init({
+            src: Globals.UrlForgotPasswordResetPassword,
+            baseClass: 'sm-popup'
+        }).ShowIframePopup();
+    }
+};
+
+
+$(function () {    
+    $('.js-show-signup-popup').click(function (e) {
+        e.preventDefault();
+        Globals.ShowSingUpPopup();
+    });
+
+    $('.js-show-signin-popup').click(function (e) {
+        e.preventDefault();
+        Globals.ShowSingInPopup();
+	});
+
+    //--- hamburger
+    $('.js-app-hamburger').click(function () {
+        $(this).toggleClass('is-active');
+        $('.js-app-top-nav').slideToggle(200);
+    });
+
+    //--- toggle nav
+    $('.js-toggle-sub-nav').click(function () {
+        if ($(window).outerWidth() < 992) {
+            $(this).toggleClass('sub-is-open');
+            $(this).closest('li').find('.js-app-sub-nav').slideToggle(200);
+        }
+    });
+
+    $(document).on('click', '.js-add-to-cart', function (event)  {
+        event.preventDefault();
+        if (!Globals.IsUserLoggedIn) {
+            Globals.ShowSingInPopup();
+        }
+        else {
+            var $this = $(this);
+            var productCode = $this.attr('data-id');
+            var quantity = parseFloat($('.js-product-count-textbox').val());            
+            
+            if (productCode) {
+                $.ajax({
+                    url: Globals.UrlBasketAddToCart,
+                    type: 'POST',
+                    data: {
+                        ProductCode: productCode,
+                        Quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.IsSuccess) {
+                            var badge = $('.js-basket-badge');
+                            var count = + badge.html();
+                            badge.removeClass('hidden');
+                            badge.closest('.js-basket-btn').attr('href', Globals.UrlBasketPage);
+                            var quantityPromoCode = isNaN(quantity) ? 1 : quantity;  
+                            badge.html(count + quantityPromoCode);
+                            $this.removeClass('loading').addClass('success');
+                            setTimeout(function () {
+                                $this.removeClass('success');
+                            }, 1000);
+
+                        } else if (response.IsSuccess && response.Data) {
+                            $this.removeClass('loading');
+                        }
+                    }
+                });
+            }
+        }
+        
+    });
+
+    //--- msg-modal modal callback (bootstrap)
+    $('.js-msg-modal').on('hidden.bs.modal', function () {
+        var modal = $('.js-msg-modal');
+        if (modal.hasClass('refresh')) {
+            window.location.reload();
+        } else if (modal.attr('goto')) {
+            window.location.href = modal.attr('goto');
+        }
+        $('.js-msg-modal .js-cancel-btn').addClass('hidden');
+    });
+
+    $('.js-close-iframe-popup').click(function () {
+        window.parent.FancyBox.ClosePopup();
+    });
+
+    //--- Search box
+    $('.js-search-input').keyup(function (e) {
+        if (e.which === 13 || e.keyCode === 13) {
+            var searchPhrase = $('.js-search-input').val();
+            window.location = Globals.UrlProducts + '?' + Globals.QueryParameter + '=' + searchPhrase;
+        }
+    });
+
+    //--- Search button
+    $('.js-search-button').click(function (e) {
+        var searchPhrase = $('.js-search-input').val();
+        window.location = Globals.UrlProducts + '?' + Globals.QueryParameter + '=' + searchPhrase;
+    });
+
+});
+
+function showPreloader(container,size) {
+    var mode = container ? '' : 'fix';
+    container = container ? container : 'body';
+    size = size ? size : '';
+
+    $(container).append('<div class="preloader ' + mode + ' ' + size + '"><span></span></div>');
+}
+function hidePreloader(){
+    $('.preloader').remove();
+}
+
+
+var globals = {
+    constants: {
+        productFilterLoadTimeout: 500,
+        basketItemQuantityChangeTimeout: 500
+    }
+};
+
+var Enums = {
+    ProductFilterType: {
+        None: -1,
+        TextBoxValue: 1,
+        GridValue: 2,
+        TreeValue: 3,
+        Combo: 11,
+        Range: 21,
+        RadioGroup: 31,
+        RadioGroupRange: 32
+    },
+    facebookAuthStatusCodes: {
+        new_user: 1,
+        without_fb: 2,
+        with_fb: 3
+    },
+    userRegistrationStatusCodes: {
+        is_registered: 1,
+        needs_email_confirmation: 2,
+        needs_companyadmin_confirmation: 3,
+        is_error: 4
+    },
+    basketProductErrorCodes: {
+        BasketEmpty: 'BASKET_EMPTY',
+
+        DeliveryInfoAddressEmpty: 'DELIVERY_ADDRESS_EMPTY',
+        DeliveryTypeNotFound: 'DELIVERY_TYPE_NOT_FOUND',
+
+        ProdNotFound: 'PROD_NOT_FOUND',
+        InsufficientProductQuntity: 'NO_PROD_REM',
+        ProdPriceChanged: 'PROD_PRICE_CHANGED',
+
+        LoyaltyCardNotFound: 'LOYALTY_CARD_NOT_FOUND',
+        LoyaltyCardExpired: 'LOYALTY_CARD_EXPIRED',
+
+        ClientNotFound: 'CLIENT_NOT_FOUND',
+        BranchNotFOund: 'BRANCH_NOT_FOUND',
+
+        CouponNotFound: 'COUPON_NOT_FOUND',
+        CouponExpired: 'COUPON_EXPIRED',
+        CouponInvalid: 'COUPON_INVALID',
+
+        VoucherNotFound: 'VOUCHER_NOT_FOUND',
+        VoucherExpired: 'VOUCHER_EXPIRED',
+        VoucherInvalid: 'VOUCHER_INVALID'
+    }
+};
+
+function showMessageModal(title, body) {
+    $('.js-msg-modal-title').text(title);
+    $('.js-msg-modal-body').text(body);
+    $('.js-msg-modal').modal('show');
+}
+
+function showAuthSuccessModal(title, body) {
+    $('.js-msg-modal', window.parent.document).addClass('refresh');
+    window.parent.showMessageModal(title, body);
+    window.parent.FancyBox.ClosePopup();
+}
+

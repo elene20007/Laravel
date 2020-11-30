@@ -1,0 +1,75 @@
+﻿var HomeModel = {        
+    SearchQueryParameter: null
+}
+
+$(function () {
+
+    //--- main slider
+    $('.js-main-slider').slick({
+        autoplay: true,
+        infinite: true,
+        dots: $('.js-main-slider div').length > 1
+    });
+
+    //--- categories wrap	
+    $('.js-brands-slider').slick({
+        slidesToShow: 6,
+        slidesToScroll: 6,
+        responsive: [
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 4
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+        ]
+    });
+
+
+
+    //--- categories wrap
+    $('.mobile .js-toggle-categories-btn').click(function () {
+        $(this).closest('.js-categories-wrap').toggleClass('open');
+        $(this).closest('.js-categories-wrap').find('nav').slideToggle(200);
+    });
+
+
+    //--- tree filters show/hide
+    $('.js-tree-filters .js-next-btn').click(function () {
+        var container = $(this).closest('li');
+        container.siblings('li').addClass('hidden');
+        container.children('div').addClass('hidden');
+        container.children('ul').removeClass('hidden');
+        $('.js-show-filters-first-level').removeClass('hidden');
+    });
+    $('.js-tree-filters .js-back-btn').click(function () {
+        var container = $(this).closest('ul').parent('li');
+        container.siblings('li').removeClass('hidden');
+        container.children('div').removeClass('hidden');
+        container.children('ul').addClass('hidden');
+        if (container.parent('.js-tree-filters').length > 0) {
+            $('.js-show-filters-first-level').addClass('hidden');
+        }
+    });
+    $('.js-show-filters-first-level').click(function () {
+        var container = $('.js-tree-filters').find('li');
+        container.removeClass('hidden');
+        container.children('div').removeClass('hidden');
+        container.children('ul').addClass('hidden');
+        $(this).addClass('hidden');
+    });
+});
+
+$(window).on('load', function () {
+    $('.desktop .js-scrollable-container').mCustomScrollbar({
+        autoHideScrollbar: false
+    });
+});
