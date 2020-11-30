@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-{{-- <a href="{{ route('edit',[$id]) }}">update</a> --}}
-
 @section('content')
 <div class="container">
     <a class="btn btn-light" href="{{ route('productsPage') }}">პროდუქტების გვერდი</a>
@@ -45,7 +43,6 @@
             <textarea class="form-control" name="description" placeholder="პროდუქტის აღწერა..."></textarea>
             <br>
             <input type="hidden" name="category_id" value="{{ Auth::user()->id }}">
-
                 <div class="form-group">
                   <label for="cat"><b>აირჩიეთ კატეგორია:</b></label>
                   <select id="cat" name="cat" class="form-control">

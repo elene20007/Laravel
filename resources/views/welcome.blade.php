@@ -121,7 +121,7 @@
                             <div id="mCSB_1_container" class="mCSB_container mCS_y_hidden mCS_no_scrollbar_y" style="position:relative; top:0; left:0;" dir="ltr">
                             <ul class="tree-filters js-tree-filters">
                                 <li>
-                                    <a href="#">ყველა</a>
+                                    <a href="{{ route('productsPage') }}">ყველა</a>
                                 </li>
                                 <li>
                                     <div class="tree-item js-tree-item">
@@ -133,7 +133,7 @@
                                     <li>
                                         <div class="tree-item js-tree-item">
                                         
-                                            <a class="js-tree-value" href="{{-- products_page(kategoriebis mixedvit filtracia) --}}"> {{ $cat->category_name }}</a>
+                                            <a class="js-tree-value" href="{{ route('productsPageFilter',["id",$cat->id]) }}"> {{ $cat->category_name }}</a>
 
                                             <button class="tree-btn btn-next js-next-btn"><i class="icon i-arrow-next--red"></i></button>
                                         </div>

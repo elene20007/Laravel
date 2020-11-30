@@ -133,4 +133,9 @@ class ProductsController extends Controller
     {
         return view("products");
     }
+    public function productsFilter($id)
+    {
+        $Products=products::where('category_id',$id)->get();
+        return view("productsPageFilter",["Products"=>$Products]);
+    }
 }
