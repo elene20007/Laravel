@@ -51,7 +51,9 @@ class StoresController extends Controller
      */
     public function show($id)
     {
-        //
+        $Stores = store::where("id",$id)->firstOrFail();
+        $Products = product::where("store_id", $id)->get();
+        return view("singleStore",["Store"=>$Stores, "Products"=>$Products]);
     }
 
     /**
@@ -62,7 +64,8 @@ class StoresController extends Controller
      */
     public function edit($id)
     {
-        //
+        $Stores=store::where('id',$id)->firstOrFail();
+        return view("editStore",["Stores"=>$Stores]);
     }
 
     /**
@@ -74,7 +77,11 @@ class StoresController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        store::where("id",$request->input("id"))->update([
+            "store_name"=>$request->input("store_name"),
+            "store_location"=>$request->input("store_location"),
+            ]);
+        return redirect()->route("stores");
     }
 
     /**

@@ -12,13 +12,28 @@
             <label><b>პროდუქტის სახელი</b></label>
             
             <input class="form-control" type="text" name="name" placeholder="შეიტანეთ პროდუქტის სახელი...">
-            
+
             <br>
             <label><b>პროდუქტის აღწერა</b></label>
             
             <textarea class="form-control" name="description" placeholder="პროდუქტის აღწერა..."></textarea>
             <br>
+            
+            <br>
+            <label><b>პროდუქტის სტატუსი</b></label>
+            
+            <input class="form-control" type="text" name="status" placeholder="შეიტანეთ პროდუქტის სტატუსი...">
+            <br>
+            <label><b>სათავსოს ნომერი</b></label>
+            <select name="store_id" id="store_id">
+                @foreach(App\store::get() as $item)
+                    <option>{{ $item->id }}</option>
+                @endforeach
+            </select>
+            <br>
             <button class="btn btn-primary" type="submit" >შენახვა</button>
+
+
         </form>
     </div>
         </div>

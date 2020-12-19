@@ -40,7 +40,7 @@ class ProductsController extends Controller
             "name"=>$request->input("name"),
             "status"=> 1,
             "description"=>$request->input("description"),
-            "store_id"=>1
+            "store_id"=>$request->input("store_id")
         ]);
         return redirect()->route('home');
     }
@@ -53,7 +53,8 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $Product=product::where('id',$id)->firstOrFail();
+        return view("singleProduct",["Product"=>$Product]);
     }
 
     /**
