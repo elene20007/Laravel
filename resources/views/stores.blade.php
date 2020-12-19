@@ -18,7 +18,7 @@
                 @if (Auth::user()->id)
                     <div style="display: flex;flex-direction: row;">
                         <form method="post" action="{{ route('userdestroyStore') }}">
-                        @csrf
+                            @csrf
                             <input type="hidden" name="id" value="{{ $store->id }}">
                             <button style="margin: 1%;" class="btn btn-outline-danger">წაშლა</button>
                         </form>

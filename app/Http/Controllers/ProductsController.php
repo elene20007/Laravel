@@ -65,7 +65,7 @@ class ProductsController extends Controller
     public function edit($id)
     {
         $Products=product::where('id',$id)->firstOrFail();
-        return view("products.edit",["Products"=>$Products]);
+        return view("edit",["Products"=>$Products]);
     }
 
     /**
@@ -75,7 +75,7 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         product::where("id",$request->input("id"))->update([
             "name"=>$request->input("name"),
@@ -92,7 +92,7 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         product::where ("id",$request->input("id"))->delete();
         return redirect()->back();

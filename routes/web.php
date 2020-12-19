@@ -24,6 +24,7 @@ Route::post('/home/destroy', "ProductsController@destroy")->name("userdestroy");
 Route::get('/home/edit{id}', "ProductsController@edit")->name("useredit");
 Route::post('/home/update', "ProductsController@update")->name("userupdate");
 
+Route::get('/home/stores', 'StoresController@index')->name('stores');
 Route::get('/home/createStore', "StoresController@create")->name("addstorepage");
 Route::post('/home/storeStore', "StoresController@store")->name("userstoreStore");
 Route::post('/home/destroyStore', "StoresController@destroy")->name("userdestroyStore");

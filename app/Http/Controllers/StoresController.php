@@ -15,7 +15,7 @@ class StoresController extends Controller
      */
     public function index()
     {
-        //
+        return view("stores");
     }
 
     /**
@@ -40,7 +40,7 @@ class StoresController extends Controller
             "store_name"=>$request->input("store_name"),
             "store_location"=>$request->input("store_location")
         ]);
-        return redirect()->route('home');
+        return redirect()->route('stores');
     }
 
     /**
@@ -72,7 +72,7 @@ class StoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
     }
@@ -83,8 +83,9 @@ class StoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        store::where ("id",$request->input("id"))->delete();
+        return redirect()->back();
     }
 }
