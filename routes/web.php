@@ -19,11 +19,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/products', "ProductsController@index")->name("productsPage");
+Route::get('/products/createPage', function () {
+	return view('create');
+})->name('createPage');
 Route::post('products/create','ProductsController@create')->name('create');
 Route::get('products/edit/{id}', 'ProductsController@edit')->name('edit');
 Route::post('products/update/{id}','ProductsController@update')->name('update');
-Route::post('products/destroy/{id}','ProductsController@destroy')->name('destroy');
-
+Route::post('products/destroy','ProductsController@destroy')->name('destroy');
 
 Route::get('products/single/{id}', "ProductsController@single")->name("single");
 
+Route::post('products/single/comment', "CommentsController@create")->name("addComment");

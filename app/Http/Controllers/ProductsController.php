@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use App\Product;
 use App\Category;
 use App\ProductCategory;
+use Auth;
 
 class ProductsController extends Controller
 {
@@ -19,32 +21,34 @@ class ProductsController extends Controller
         return view("productsPage");
     }
 
-    /**
+     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         if (Input::file("image")){
 
         $dp=public_path("images");
         $filename=uniqid().".jpg";
         $img=Input::file("image")->move($dp,$filename);
-        }   
         Product::create([
                     "product_name"=>$request->input("product_name"),
                     "description"=>$request->input("description"),
                     "price"=>$request->input("price"),
                     "image"=>$filename
                 ]);
+        }   
+        $a = array(1, 2);
 
-        foreach ($request->input("category") as $cat) {
+        foreach ($a as $cat) {
             ProductCategory::create([
-            "product_id"=>Product::latest("created_at")->first(),
+            "product_id"=>Product::latest("created_at")->first()->id,
             "category_id"=>$cat
             ]);
         };
+        return redirect()->back();
     }
 
     /**
