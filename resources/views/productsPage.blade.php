@@ -2,7 +2,8 @@
 @section('content')
 <div class="container">
     @if(Auth::user() && Auth::user()->id === 1)
-        <a href="{{ route('createPage') }}">ახალი პროდუქტის დამატება</a>
+        <a class="btn btn-dark" style="color: white" href="{{ route('createPage') }}">ახალი პროდუქტის დამატება</a>
+        <a class="btn btn-dark" style="color: white" href="{{ route('categoriesPage') }}">ახალი კატეგორიის დამატება</a>
 	@endif
     <div class="row">
         @foreach (App\Product::get() as $product)

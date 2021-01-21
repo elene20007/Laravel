@@ -19,7 +19,7 @@
             <br>
             <label><b>კატეგორია</b></label>
                 @foreach(App\Category::get() as $item)
-                    <input type="checkbox" name="category[]" id="{{ $item->id }}" value="{{ $item->id }}">
+                    <input type="checkbox" name="categoryNames[]" id="{{ $item->id }}" value="{{ $item->category_name }}">
                     <label for="{{ $item->id }}">{{ $item->category_name }}</label>
                 @endforeach
             <br>

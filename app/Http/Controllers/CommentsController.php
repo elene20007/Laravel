@@ -26,9 +26,10 @@ class CommentsController extends Controller
      */
     public function create(Request $request)
     {
+    
         Comment::create([
-                    "user_id"=>2,
-                    "product_id"=>1,
+                    "user_id"=>$request->input("user_id"),
+                    "product_id"=>$request->input("product_id"),
                     "comment"=>$request->input("comment")
                 ]);
         return redirect()->back();
@@ -85,8 +86,9 @@ class CommentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        Comment::where("id",$request->input("id"))->delete();
+        return redirect()->back();
     }
 }

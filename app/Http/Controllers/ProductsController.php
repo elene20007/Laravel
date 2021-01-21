@@ -40,15 +40,14 @@ class ProductsController extends Controller
                     "image"=>$filename
                 ]);
         }   
-        $a = array(1, 2);
 
-        foreach ($a as $cat) {
+        foreach ($request->input("categoryNames") as $cat) {
             ProductCategory::create([
             "product_id"=>Product::latest("created_at")->first()->id,
-            "category_id"=>$cat
+            "category_id"=>Category::where("category_name", $cat)->firstOrFail()->id,
             ]);
         };
-        return redirect()->back();
+        return view("productsPage");
     }
 
     /**
@@ -57,9 +56,12 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function createCategory(Request $request)
     {
-        //
+        Category::create([
+                    "category_name"=>$request->input("category_name")
+                ]);    
+        return redirect()->back();
     }
 
     /**
@@ -68,9 +70,10 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function destroyCategory(Request $request)
     {
-        //
+        Category::where("id",$request->input("id"))->delete();
+        return redirect()->back();
     }
 
     /**
