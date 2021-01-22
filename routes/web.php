@@ -38,4 +38,8 @@ Route::get('products/single/{id}', "ProductsController@single")->name("single");
 Route::post('products/single/comments', "CommentsController@create")->name("addComment");
 Route::post('products/comments', "CommentsController@destroy")->name("destroyComment");
 
+Route::post('products/single/likes', "LikesController@create")->name("createLike");
+Route::get('products/likes/{id}', "LikesController@destroy")->name("destroyLike");
+
+
 

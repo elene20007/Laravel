@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Product;
 use App\Category;
+use App\Like;
 use App\ProductCategory;
 use Auth;
 
@@ -119,9 +120,15 @@ class ProductsController extends Controller
     }
 
     public function single($id)
-    {
+    {   
+        $likes = Like::where("product_id", $id)->get();
+        $count = count($likes);
         $Products=Product::where('id',$id)->firstOrFail();
-        return view("singlePage",["product"=>$Products]);
+        return view("singlePage",[
+            "product"=>$Products,
+            "count"=>$count,
+            "likes"=>$likes,
+        ]);
     }
 
 }

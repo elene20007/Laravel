@@ -51,19 +51,39 @@
                 </div>
             </div>
         </main>
+        
+            @if(auth::user())
+                @if(count($likes->where("user_id",Auth::user()->id)) == 0) 
+                    <form method="post" action="{{ route('createLike') }}" style="margin:1%">
+                        @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                            <button class="btn btn-link" style="font-size: 25px"><b>Like</b><img style="margin-left: 5px; margin-bottom: 7px;width: 25px; height: auto;" src="{{ asset('images')."/"."like.png" }}"></button>
+                    </form>
+                @else
+                      
+                    @foreach ($likes->where("user_id",Auth::user()->id) as $key => $value) 
+                        <a href="{{ route('destroyLike', ["id"=> $value->id]) }}" style="font-size: 25px"><b>Unlike</b><img style="margin-left: 5px; margin-bottom: 7px;width: 25px; height: auto;" src="{{ asset('images')."/"."like.png" }}"></a>
+                    @endforeach
+                @endif
+            @endif
+
+        
     <div class="chatContainer" style="margin-top: 2%">
 
-    <div class="chatTitleContainer">Comments</div>
+        <a class="btn btn-link" style="font-size: 17px ;color: #0098C8;" href="">{{ $count }} Likes</a>
+    <div class="chatTitleContainer" style="color: #0098C8; font-size: 20px; margin-bottom: 10px"><b>Comments</b></div>
     <div class="chatHistoryContainer">
 
         <ul class="formComments">
             @foreach(App\Comment::where("product_id", $product->id)->get() as $comment)
+            <hr style="height:0.5px;border-width:0;opacity: 50%;background-color: gray">
             <li class="d-flex row">
                             <div style="max-width: 10%">
-                                <div>{{ (DB::table("users"))->where("id",$comment->user_id)->get()[0]->name }}</div>
                                 <img src="{{ asset('images')."/"."8-512.png" }}" class="img-fluid" style="width: 30%">
+                                <div>{{ (DB::table("users"))->where("id",$comment->user_id)->get()[0]->name }}</div>
                             </div>
-                            <div style="width: 80%; display: flex;justify-content: space-between;" >
+                            <div style="width: 85%; display: flex;justify-content: space-between;margin-top: 15px" >
                                 <p>{{ $comment->comment }}</p>
                                 @if(Auth::user() && Auth::user()->id === $comment->user_id)
                                     <form method="post" action="{{ route('destroyComment') }}" style="margin:1%">
