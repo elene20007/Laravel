@@ -19,9 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/products', "ProductsController@index")->name("productsPage");
+
 Route::get('/products/createPage', function () {
 	return view('create');
-})->name('createPage');
+})->name('createPage')->middleware("admin");
 Route::get('/categories/', function () {
 	return view('categoriesPage');
 })->name('categoriesPage');

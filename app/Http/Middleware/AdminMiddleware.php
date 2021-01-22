@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Auth;
 
 class AdminMiddleware
 {
@@ -15,8 +16,9 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->email == "Admin@gmail.com"){
+        if(Auth::user()->email == "admin@gmail.com"){
             return $next($request);
         }
+        abort(403);
     }
 }
